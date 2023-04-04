@@ -18,7 +18,7 @@
 
 
        <div style="text-align:center">
-            <button class="save" > Save </button>
+            <button class="save" onclick="getPartnerLocation()" > Save </button>
        </div>
        <div>
            <h6 class="address">Address: </h6>
@@ -110,6 +110,21 @@
             alert("An unknown error occurred.");
             break;
            }
+        }
+            
+              function getPartnerLocation() {
+            $.ajax({
+                url: '/location_update/get_partner_location',
+                type: 'POST',
+                dataType: 'json',
+                data: {},
+                success: function(response) {
+                    alert('Location details retrieved successfully!');
+                },
+                error: function(response) {
+                    alert('An error occurred while retrieving the location details');
+                },
+            });
         }
 </script>
 
