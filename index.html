@@ -4,25 +4,130 @@
     <meta charset="UTF-8">
     <title>Customer Location</title>
 </head>
-<body>
-    <div>
-        <button type="button" onclick="getLocation()">Get Your Location</button>
-    </div>
-      <script>
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(sendLocationData);
-            } else {
-                alert("Geolocation is not supported by this browser.");
+
+    <body>
+
+       <h2 style="text-align:center">Find Your Location In Below Map</h2>
+       <div style="text-align:center">
+           <button id="button" onclick="getlocation();"> Your Location</button>
+
+       </div>
+       <br>
+
+        <div id="demo" style="width: 600px; height: 400px; margin-left:300px;"></div>
+            <br>
+
+
+       <div style="text-align:center">
+            <button class="get_data" > Get Data</button>
+           <button class="save" type="button" onclick="get_location()">Save</button>
+       </div>
+       <div>
+           <h6 class="address">Address: </h6>
+           <h6 class="latitude">Latitude: </h6>
+           <h6 class="longitude">Longitude: </h6>
+            <h6 class="city">City: </h6>
+           <h6 class="country">Country:</h6>
+       </div>
+
+        <script src="https://maps.google.com/maps/api/js?sensor=false"> </script>
+
+        <script type="text/javascript">
+        var geocoder;
+        function getlocation(){
+
+            if(navigator.geolocation){
+                navigator.geolocation.getCurrentPosition(showPos, showErr);
+            }
+            else{
+                alert("Sorry! your Browser does not support Geolocation API")
             }
         }
-        function sendLocationData(position) {
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', '/update_partner_location_data', true);
-            xhr.setRequestHeader('Content-Type', 'application/json');
-            xhr.send(JSON.stringify({'latitude': position.coords.latitude, 'longitude': position.coords.longitude}));
+        //Showing Current Poistion on Google Map
+        function showPos(position){
+
+            latt = position.coords.latitude;
+            long = position.coords.longitude;
+            var lattlong = new google.maps.LatLng(latt, long);
+            var myOptions = {
+                center: lattlong,
+                zoom: 15,
+                mapTypeControl: true,
+                navigationControlOptions: {style:google.maps.NavigationControlStyle.SMALL}
+            }
+            var maps = new google.maps.Map(document.getElementById("demo"), myOptions);
+            var markers =
+            new google.maps.Marker({position:lattlong, map:maps, title:"You are here!"});
         }
 
+              const getlocationDetails =() =>{
+                const address=document.querySelector('.address');
+                const lat =document.querySelector('.latitude');
+                const long =document.querySelector('.longitude');
+                const city =document.querySelector('.city');
+                const country =document.querySelector('.country');
+                const success=(position)=>{
+                    const latitude=position.coords.latitude;
+                    const longitude=position.coords.longitude;
+
+                    const geoAPIUrl=`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}
+                    &localityLanguage=en`
+
+                    fetch(geoAPIUrl)
+                    .then(res => res.json())
+                    .then(data => {
+                        console.log(data)
+                        address.textContent=data.locality
+                        lat.textContent=data.latitude
+                        long.textContent=data.longitude
+                        city.textContent=data.city
+                        country.textContent=data.countryName
+
+                    })
+
+
+                }
+                const error=()=>{
+                    address.textContent ="Unable to retrieve your location"
+                }
+
+                navigator.geolocation.getCurrentPosition(success, error);
+              }
+
+              document.querySelector('.get_data').addEventListener('click',getlocationDetails);
+
+        //Handling Error and Rejection
+             function showErr(error) {
+              switch(error.code){
+              case error.PERMISSION_DENIED:
+             alert("User denied the request for Geolocation API.");
+              break;
+             case error.POSITION_UNAVAILABLE:
+             alert("USer location information is unavailable.");
+            break;
+            case error.TIMEOUT:
+            alert("The request to get user location timed out.");
+            break;
+           case error.UNKNOWN_ERROR:
+            alert("An unknown error occurred.");
+            break;
+           }
+        }
+            
+            function get_location() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(sendLocationData);
+                } else {
+                    alert("Geolocation is not supported by this browser.");
+                }
+            }
+            function sendLocationData(position) {
+                var xhr = new XMLHttpRequest();
+                xhr.open('POST', '/update_partner_location_data', true);
+                xhr.setRequestHeader('Content-Type', 'application/json');
+                xhr.send(JSON.stringify({'latitude': position.coords.latitude, 'longitude': position.coords.longitude}));
+            }
+</script>
 
 </body>
 </html>
