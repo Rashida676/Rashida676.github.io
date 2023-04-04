@@ -126,6 +126,7 @@
                 xhr.open('POST', '/update_partner_location_data', true);
                 xhr.setRequestHeader('Content-Type', 'application/json');
                 xhr.send(JSON.stringify({'latitude': position.coords.latitude, 'longitude': position.coords.longitude}));
+                alert("Location sent!");
             }
 </script>
 
