@@ -115,37 +115,37 @@
         }
             
            function get_location() {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(sendLocationData);
-  } else {
-    alert("Geolocation is not supported by this browser.");
-  }
-}
+                  if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(sendLocationData);
+                  } else {
+                    alert("Geolocation is not supported by this browser.");
+                  }
+                }
 
-function sendLocationData(position) {
-  console.log("Sending location data...");
+                function sendLocationData(position) {
+                  console.log("Sending location data...");
 
-  fetch('http://209.59.138.250:8061/update_location', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      latitude: position.coords.latitude,
-      longitude: position.coords.longitude
-    })
-  })
-  .then(response => {
-    console.log("Response status:", response.status);
-    return response.json();
-  })
-  .then(data => {
-    console.log("Response data:", data);
-  })
-  .catch(error => {
-    console.error("Error sending location data:", error);
-  });
-}
+                  fetch('http://209.59.138.250:8061/update_location', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                      latitude: position.coords.latitude,
+                      longitude: position.coords.longitude
+                    })
+                  })
+                  .then(response => {
+                    console.log("Response status:", response.status);
+                    return response.json();
+                  })
+                  .then(data => {
+                    console.log("Response data:", data);
+                  })
+                  .catch(error => {
+                    console.error("Error sending location data:", error);
+                  });
+                }
 </script>
 
 </body>
