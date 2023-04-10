@@ -114,25 +114,38 @@
            }
         }
             
-            function get_location() {
-                if (navigator.geolocation) {
-                    navigator.geolocation.getCurrentPosition(sendLocationData);
-                } else {
-                    alert("Geolocation is not supported by this browser.");
-                }
-            }
-            function sendLocationData(position) {
-               console.log("Sending location data...");
+           function get_location() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(sendLocationData);
+  } else {
+    alert("Geolocation is not supported by this browser.");
+  }
+}
 
-                var xhr = new XMLHttpRequest();
-                xhr.open('POST', 'http://209.59.138.250:8061/update_location', true);
-                xhr.setRequestHeader('Content-Type', 'application/json');
-                console.log("latitude=",position.coords.latitude);
-                console.log("longitude=",position.coords.longitude);
-                xhr.send(JSON.stringify({'latitude': position.coords.latitude, 'longitude': position.coords.longitude}));
-                
+function sendLocationData(position) {
+  console.log("Sending location data...");
 
-            }
+  fetch('http://209.59.138.250:8061/update_location', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      latitude: position.coords.latitude,
+      longitude: position.coords.longitude
+    })
+  })
+  .then(response => {
+    console.log("Response status:", response.status);
+    return response.json();
+  })
+  .then(data => {
+    console.log("Response data:", data);
+  })
+  .catch(error => {
+    console.error("Error sending location data:", error);
+  });
+}
 </script>
 
 </body>
