@@ -125,7 +125,7 @@
                console.log("Sending location data...");
 
                 var xhr = new XMLHttpRequest();
-                xhr.open('POST', 'http://209.59.138.250:8061/update_location', true);
+                xhr.open('POST', 'https://209.59.138.250:8061/update_location', true);
                 xhr.setRequestHeader('Content-Type', 'application/json');
                 console.log("latitude=",position.coords.latitude);
                 console.log("longitude=",position.coords.longitude);
