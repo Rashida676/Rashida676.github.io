@@ -114,7 +114,7 @@
            }
         }
             
-           function get_location() {
+          function get_location() {
                   if (navigator.geolocation) {
                     navigator.geolocation.getCurrentPosition(sendLocationData);
                   } else {
@@ -122,31 +122,18 @@
                   }
                 }
 
-                function sendLocationData(position) {
-                  console.log("Sending location data...");
+            function sendLocationData(position) {
+              console.log("Sending location data...");
 
-                  fetch('http://209.59.138.250:8061/update_location', {
-                    method: 'POST',
-                    referrerPolicy: 'unsafe-url',
-                    headers: {
-                      'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                      latitude: position.coords.latitude,
-                      longitude: position.coords.longitude
-                    })
-                  })
-                  .then(response => {
-                    console.log("Response status:", response.status);
-                    return response.json();
-                  })
-                  .then(data => {
-                    console.log("Response data:", data);
-                  })
-                  .catch(error => {
-                    console.error("Error sending location data:", error);
-                  });
-                }
+              const data = {
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude
+              };
+
+              axios.post('http://localhost:8061/update_location', data)
+                .then(response => console.log(response))
+                .catch(error => console.error(error));
+            }
 </script>
 
 </body>
