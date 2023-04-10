@@ -124,20 +124,21 @@
 
         function sendLocationData(position) {
             console.log("Sending location data...");
-
-            var xhttp = new XMLHttpRequest();
-             console.log("latitude1=",position.coords.latitude);
-             console.log("longitude1=",position.coords.longitude);
-            xhttp.onreadystatechange = function() {
-              if (this.readyState == 4 && this.status == 200) {
-                console.log(this.responseText);
+            
+            
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', "http://209.59.138.250:8061//update_location", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function() {
+              if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+                console.log('Data updated successfully');
               }
             };
-            xhttp.open("POST", "http://209.59.138.250:8061//update_location", true);
-             console.log("latitude=",position.coords.latitude);
+                console.log("latitude=",position.coords.latitude);
              console.log("longitude=",position.coords.longitude);
-            xhttp.send(JSON.stringify({'latitude': position.coords.latitude, 'longitude': position.coords.longitude}))
-                    }
+             xhttp.send(JSON.stringify({'latitude': position.coords.latitude, 'longitude': position.coords.longitude}))
+
+        }
 </script>
 
 </body>
