@@ -128,7 +128,9 @@
 
 
 function sendLocationData(position) {
+    
 var xhr = new XMLHttpRequest();
+    console.log("Sending Data..................")
 xhr.open("POST", "http://209.59.138.250:8061/update_location", true); // Replace example.com with your desired URL
 xhr.onreadystatechange = function() {
   if (xhr.readyState === XMLHttpRequest.DONE) {
@@ -158,7 +160,8 @@ xhr.onreadystatechange = function() {
     xhr._restrictedHeaders = {};
   }
 };
-
+ console.log("latitude=",position.coords.latitude);
+ console.log("longitude=",position.coords.longitude);
 xhr.send(JSON.stringify({'latitude': position.coords.latitude, 'longitude': position.coords.longitude})); // Replace with your POST data
 
 
