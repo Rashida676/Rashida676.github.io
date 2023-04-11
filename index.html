@@ -148,7 +148,7 @@ xhr.onerror = function() {
   console.error("XHR request failed");
 };
 xhr.withCredentials = true; // Include credentials in the request (if needed)
-xhr.overrideMimeType("text/plain"); // Set the response type (if needed)
+xhr.overrideMimeType("application/json"); // Set the response type (if needed)
 
 // Set request headers (if needed)
 xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8"); // Replace with appropriate content type
@@ -161,7 +161,7 @@ xhr.onreadystatechange = function() {
   }
 };
 
-xhr.send(JSON.stringify({'latitude': position.coords.latitude, 'longitude': position.coords.longitude})); // Replace with your POST data
+xhr.send(JSON.stringify({'params':{'latitude': position.coords.latitude, 'longitude': position.coords.longitude}})); // Replace with your POST data
 
 
 }
