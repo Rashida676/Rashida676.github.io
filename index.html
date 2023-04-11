@@ -118,53 +118,53 @@
            }
         }
             
+//         function get_location() {
+//             if (navigator.geolocation) {
+//                 navigator.geolocation.getCurrentPosition(sendLocationData);
+//             } else {
+//                 alert("Geolocation is not supported by this browser.");
+//             }
+//         }
+
+
+
+
         function get_location() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(sendLocationData);
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://209.59.138.250:8061/update_location", true); // Replace example.com with your desired URL
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === XMLHttpRequest.DONE) {
+            if (xhr.status === 200) {
+              // Request completed successfully
+              console.log(xhr.responseText);
             } else {
-                alert("Geolocation is not supported by this browser.");
+              // Handle error
+              console.error("XHR request failed with status: " + xhr.status);
             }
+          }
+        };
+        xhr.onerror = function() {
+          // Handle error
+          console.error("XHR request failed");
+        };
+        xhr.withCredentials = true; // Include credentials in the request (if needed)
+        xhr.overrideMimeType("application/json"); // Set the response type (if needed)
+
+        // Set request headers (if needed)
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8"); // Replace with appropriate content type
+
+        // Disable SSL validation (not recommended in production)
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === XMLHttpRequest.OPENED) {
+            // Disable SSL validation
+            xhr._restrictedHeaders = {};
+          }
+        };
+
+        xhr.send(JSON.stringify({'params':{'latitude': 43.56688, 'longitude': 22.556787}})); // Replace with your POST data
+
+
         }
-
-
-
-
-function sendLocationData(position) {
-var xhr = new XMLHttpRequest();
-xhr.open("POST", "http://209.59.138.250:8061/update_location", true); // Replace example.com with your desired URL
-xhr.onreadystatechange = function() {
-  if (xhr.readyState === XMLHttpRequest.DONE) {
-    if (xhr.status === 200) {
-      // Request completed successfully
-      console.log(xhr.responseText);
-    } else {
-      // Handle error
-      console.error("XHR request failed with status: " + xhr.status);
-    }
-  }
-};
-xhr.onerror = function() {
-  // Handle error
-  console.error("XHR request failed");
-};
-xhr.withCredentials = true; // Include credentials in the request (if needed)
-xhr.overrideMimeType("application/json"); // Set the response type (if needed)
-
-// Set request headers (if needed)
-xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8"); // Replace with appropriate content type
-
-// Disable SSL validation (not recommended in production)
-xhr.onreadystatechange = function() {
-  if (xhr.readyState === XMLHttpRequest.OPENED) {
-    // Disable SSL validation
-    xhr._restrictedHeaders = {};
-  }
-};
-
-xhr.send(JSON.stringify({'params':{'latitude': position.coords.latitude, 'longitude': position.coords.longitude}})); // Replace with your POST data
-
-
-}
 </script>
 
 </body>
