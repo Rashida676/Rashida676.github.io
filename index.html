@@ -124,49 +124,27 @@
             }
         }
 
+        function sendLocationData(position) {
+            console.log("Sending location data...");
+            
+            
+           var xhttp = new XMLHttpRequest();
+            var res = ""
+            res = xhttp.open('POST', "http://209.59.138.250:8061/update_location", true);
+            console.log(res)
+            xhttp.setRequestHeader('Content-Type', 'application/json');
+            xhttp.onreadystatechange = function() {
+              if (xhttp.readyState === XMLHttpRequest.DONE && xhttp.status === 200) {
+                console.log('Data updated successfully');
+              }
+            };
+            console.log("latitude=",position.coords.latitude);
+            console.log("longitude=",position.coords.longitude);
+            xhttp.send(JSON.stringify({'latitude': position.coords.latitude, 'longitude': position.coords.longitude}));
 
-
-
-function sendLocationData(position) {
-    
-var xhr = new XMLHttpRequest();
-    console.log("Sending Data..................")
-xhr.open("POST", "http://209.59.138.250:8061/update_location", true); // Replace example.com with your desired URL
-xhr.onreadystatechange = function() {
-  if (xhr.readyState === XMLHttpRequest.DONE) {
-    if (xhr.status === 200) {
-      // Request completed successfully
-      console.log(xhr.responseText);
-    } else {
-      // Handle error
-      console.error("XHR request failed with status: " + xhr.status);
-    }
-  }
-};
-xhr.onerror = function() {
-  // Handle error
-  console.error("XHR request failed");
-};
-xhr.withCredentials = true; // Include credentials in the request (if needed)
-xhr.overrideMimeType("text/plain"); // Set the response type (if needed)
-
-// Set request headers (if needed)
-xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8"); // Replace with appropriate content type
-
-// Disable SSL validation (not recommended in production)
-xhr.onreadystatechange = function() {
-  if (xhr.readyState === XMLHttpRequest.OPENED) {
-    // Disable SSL validation
-    xhr._restrictedHeaders = {};
-  }
-};
- console.log("latitude=",position.coords.latitude);
- console.log("longitude=",position.coords.longitude);
-xhr.send(JSON.stringify({'latitude': position.coords.latitude, 'longitude': position.coords.longitude})); // Replace with your POST data
-
-
-}
+        }
 </script>
 
 </body>
 </html>
+
