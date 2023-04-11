@@ -118,18 +118,18 @@
            }
         }
             
-//         function get_location() {
-//             if (navigator.geolocation) {
-//                 navigator.geolocation.getCurrentPosition(sendLocationData);
-//             } else {
-//                 alert("Geolocation is not supported by this browser.");
-//             }
-//         }
-
-
-
-
         function get_location() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(sendLocationData);
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+
+
+
+        function sendLocationData(position) {
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "http://209.59.138.250:8061/update_location", true); // Replace example.com with your desired URL
         xhr.onreadystatechange = function() {
